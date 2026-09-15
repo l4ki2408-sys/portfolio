@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daria / Дарья Науменко — Business / Process Analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EDF1F1;
+    --paper-deep:#E3E9E9;
+    --card:#FFFFFF;
+    --ink:#152238;
+    --ink-soft:#4B5A70;
+    --ink-faint:#8A97A6;
+    --line:#C7D0D1;
+    --amber:#C4832A;
+    --amber-soft:#EFDCB8;
+    --teal:#2E7B72;
+    --teal-soft:#D8E9E6;
+    --radius:2px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Source Serif 4', serif;
+    font-size:17px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:920px; margin:0 auto; padding:0 28px;}
+
+  h1,h2,h3, .disp{ font-family:'Space Grotesk', sans-serif; letter-spacing:-0.01em; color:var(--ink); }
+  .mono{ font-family:'IBM Plex Mono', monospace; letter-spacing:0.01em; }
+
+  /* ---------- background spine ---------- */
+  .spine-bg{
+    position:fixed; top:0; left:50%; transform:translateX(-460px);
+    width:8px; height:100%; z-index:0; pointer-events:none;
+    background:repeating-linear-gradient(to bottom, var(--line) 0 4px, transparent 4px 12px);
+    opacity:.55;
+  }
+  @media (max-width:980px){ .spine-bg{display:none;} }
+
+  /* ---------- header ---------- */
+  header{
+    position:relative; z-index:1;
+    padding:64px 0 40px;
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--teal); margin-bottom:18px; display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:""; width:22px; height:1px; background:var(--teal);}
+  h1.name{ font-size:clamp(34px,5vw,52px); font-weight:600; line-height:1.05; }
+  .role-line{
+    margin-top:14px; font-size:19px; color:var(--ink-soft); max-width:560px;
+    font-family:'Source Serif 4', serif; font-style:italic;
+  }
+  .role-line b{ color:var(--ink); font-style:normal; font-weight:600; }
+  .contact-row{
+    margin-top:28px; display:flex; flex-wrap:wrap; gap:10px 22px;
+    font-family:'IBM Plex Mono', monospace; font-size:13.5px; color:var(--ink-soft);
+  }
+  .contact-row a{ color:var(--ink-soft); text-decoration:none; border-bottom:1px solid var(--line); padding-bottom:1px; }
+  .contact-row a:hover{ color:var(--teal); border-color:var(--teal); }
+  .lang-switch{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-faint); margin-top:22px; }
+  .lang-switch a{ color:var(--ink-faint); text-decoration:underline; }
+  .lang-switch a.active{ color:var(--ink); font-weight:600; text-decoration:none; }
+
+  /* ---------- section shell ---------- */
+  section{ position:relative; z-index:1; padding:56px 0; border-bottom:1px solid var(--line); }
+  .section-head{ display:flex; align-items:baseline; gap:16px; margin-bottom:30px; }
+  .section-num{ font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--ink-faint); }
+  .section-title{ font-size:24px; font-weight:600; }
+
+  /* ---------- skills ---------- */
+  .skill-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:22px 32px; }
+  .skill-card .k-label{ font-family:'IBM Plex Mono',monospace; font-size:12px; text-transform:uppercase; letter-spacing:.1em; color:var(--amber); margin-bottom:10px; }
+  .skill-card ul{ list-style:none; }
+  .skill-card li{ font-size:15px; color:var(--ink-soft); padding:5px 0 5px 16px; position:relative; }
+  .skill-card li::before{ content:"—"; position:absolute; left:0; color:var(--ink-faint); }
+  .tag-ai{ display:inline-block; margin-top:4px; font-family:'IBM Plex Mono',monospace; font-size:11.5px; background:var(--teal-soft); color:var(--teal); padding:2px 7px; border-radius:2px; }
+
+  /* ---------- case studies ---------- */
+  .case{ padding:56px 0; border-bottom:1px solid var(--line); }
+  .case-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap; margin-bottom:8px;}
+  .case-title{ font-size:28px; font-weight:600; max-width:640px; }
+  .case-meta{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-faint); text-align:right; white-space:nowrap;}
+  .case-tagline{ color:var(--ink-soft); font-style:italic; font-size:17px; margin-top:6px; max-width:640px;}
+
+  .flow{ margin:34px 0; }
+  .flow-row{ display:flex; align-items:center; gap:0; overflow-x:auto; padding-bottom:6px; }
+  .flow-node{
+    flex:0 0 auto; background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:12px 16px; font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-soft);
+    min-width:120px; text-align:center;
+  }
+  .flow-node.strong{ border-color:var(--teal); color:var(--teal); font-weight:500; }
+  .flow-arrow{ flex:0 0 auto; width:26px; height:1px; background:var(--ink-faint); position:relative; margin:0 4px; }
+  .flow-arrow::after{ content:""; position:absolute; right:0; top:-3px; border:3px solid transparent; border-left-color:var(--ink-faint); }
+  .flow-label{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.1em; color:var(--ink-faint); margin-bottom:8px; }
+
+  /* ---------- BPMN diagram ---------- */
+  .bpmn-wrap{ margin:30px 0 10px; background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:18px 18px 10px; }
+  .bpmn-title{ font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--ink-faint); margin-bottom:10px; }
+  .bpmn-wrap svg{ width:100%; height:auto; display:block; }
+  .bpmn-task{ fill:var(--card); stroke:var(--ink-soft); stroke-width:1.4; }
+  .bpmn-task-txt{ fill:var(--ink); font-family:'IBM Plex Mono',monospace; font-size:11px; }
+  .bpmn-event{ fill:var(--paper); stroke:var(--ink); stroke-width:1.6; }
+  .bpmn-gateway{ fill:var(--amber-soft); stroke:var(--amber); stroke-width:1.6; }
+  .bpmn-flow{ fill:none; stroke:var(--ink-faint); stroke-width:1.4; }
+  .bpmn-flow-loop{ fill:none; stroke:var(--teal); stroke-width:1.4; stroke-dasharray:3 3; }
+  .bpmn-lane-label{ font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.08em; fill:var(--ink-faint); text-transform:uppercase; }
+  .bpmn-cond{ font-family:'IBM Plex Mono',monospace; font-size:10px; fill:var(--teal); }
+
+  .grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:36px; margin-top:30px;}
+  @media (max-width:720px){ .grid-2{ grid-template-columns:1fr; } }
+  .col-label{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:.1em; color:var(--amber); margin-bottom:12px; }
+  .col-block p{ color:var(--ink-soft); font-size:15.5px; margin-bottom:8px; }
+  .col-block ul{ list-style:none; }
+  .col-block li{ font-size:15px; color:var(--ink-soft); padding:6px 0 6px 16px; position:relative; border-bottom:1px dashed var(--line); }
+  .col-block li:last-child{ border-bottom:none; }
+  .col-block li::before{ content:"›"; position:absolute; left:0; color:var(--teal); }
+
+  .metrics{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:18px; margin-top:26px; }
+  .metric{ background:var(--card); border:1px solid var(--line); border-left:3px solid var(--amber); padding:16px 18px; border-radius:var(--radius); }
+  .metric .num{ font-family:'Space Grotesk',sans-serif; font-size:26px; font-weight:700; color:var(--ink); line-height:1; }
+  .metric .desc{ font-size:13px; color:var(--ink-soft); margin-top:6px; }
+
+  .artifact{ margin-top:30px; background:var(--ink); border-radius:var(--radius); overflow:hidden; }
+  .artifact-bar{ display:flex; justify-content:space-between; align-items:center; padding:10px 18px; background:#0F1A2B; }
+  .artifact-bar .lbl{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:#8FAFA8; text-transform:uppercase; letter-spacing:.1em; }
+  .artifact-bar .dots span{ display:inline-block; width:8px; height:8px; border-radius:50%; background:#33465F; margin-left:5px; }
+  pre{ padding:20px 18px; overflow-x:auto; font-family:'IBM Plex Mono',monospace; font-size:13px; line-height:1.7; color:#DCE6E4; }
+  .cm{ color:#7FA69C; }
+  .kw{ color:#E3B15C; }
+  .fn{ color:#8FC3E0; }
+
+  /* ---------- footer ---------- */
+  footer{ padding:56px 0 90px; position:relative; z-index:1; }
+  footer .disp{ font-size:22px; font-weight:600; margin-bottom:10px; }
+  footer p{ color:var(--ink-soft); max-width:480px; margin-bottom:22px; }
+  .cta-row{ display:flex; gap:14px; flex-wrap:wrap; }
+  .cta{ font-family:'IBM Plex Mono',monospace; font-size:13px; border:1px solid var(--ink); padding:11px 20px; border-radius:2px; color:var(--ink); text-decoration:none; }
+  .cta.primary{ background:var(--ink); color:var(--paper); }
+  .cta:hover{ background:var(--ink); color:var(--paper); }
+
+  .note{ font-size:13px; color:var(--ink-faint); margin-top:36px; border-top:1px dashed var(--line); padding-top:18px; }
+
+  .lang-toggle{
+    position:fixed; top:22px; right:28px; z-index:20;
+    display:flex; background:var(--card); border:1px solid var(--line); border-radius:20px;
+    overflow:hidden; font-family:'IBM Plex Mono',monospace; font-size:12.5px; box-shadow:0 2px 10px rgba(21,34,56,.08);
+  }
+  .lang-toggle button{
+    border:none; background:transparent; padding:8px 16px; cursor:pointer; color:var(--ink-faint);
+    font-family:inherit; font-size:inherit;
+  }
+  .lang-toggle button.active{ background:var(--ink); color:var(--paper); }
+  @media (max-width:600px){ .lang-toggle{ top:14px; right:14px; } .lang-toggle button{ padding:7px 12px; } }
+</style>
+</head>
+
+<body>
+
+<div class="spine-bg"></div>
+
+<div class="lang-toggle">
+  <button id="btn-ru" class="active" onclick="setLang('ru')">RU</button>
+  <button id="btn-en" onclick="setLang('en')">EN</button>
+</div>
+
+<div class="wrap lang-block" id="block-ru">
+
+  <header>
+    <div class="eyebrow">Portfolio · Business &amp; Process Analysis</div>
+    <h1 class="name">Дарья Науменко</h1>
+    <p class="role-line">Business / Process Analyst с фокусом на <b>AI-augmented оптимизацию процессов</b> — от сбора требований и BPMN до внедрения через API GigaChat / OpenAI.</p>
+    <div class="contact-row">
+      <a href="mailto:LakiYT2408@yandex.ru">LakiYT2408@yandex.ru</a>
+      <span>+7 927 178-78-71</span>
+      <span>Нижний Новгород · гибрид / удалённо</span>
+    </div>
+  </header>
+
+  <section id="skills">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <span class="section-title">Стек</span>
+    </div>
+    <div class="skill-grid">
+      <div class="skill-card">
+        <div class="k-label">Бизнес-анализ</div>
+        <ul>
+          <li>User Stories, Use Cases, Acceptance Criteria</li>
+          <li>Приоритизация MoSCoW, «5 почему»</li>
+          <li>Управление стейкхолдерами</li>
+        </ul>
+      </div>
+      <div class="skill-card">
+        <div class="k-label">Моделирование</div>
+        <ul>
+          <li>BPMN 2.0 (AS-IS / TO-BE)</li>
+          <li>UML (Activity, Sequence)</li>
+          <li>Draw.io, Miro</li>
+        </ul>
+      </div>
+      <div class="skill-card">
+        <div class="k-label">Данные</div>
+        <ul>
+          <li>SQL — JOIN, агрегация, подзапросы уверенно</li>
+          <li>Оконные функции, CTE — рабочий уровень <span class="tag-ai">+ AI-ассистенты на сложных запросах</span></li>
+          <li>Python (Pandas), Excel Power Query</li>
+        </ul>
+      </div>
+      <div class="skill-card">
+        <div class="k-label">AI-интеграции</div>
+        <ul>
+          <li>OpenAI API, GigaChat, YandexGPT</li>
+          <li>REST/SOAP, OpenAPI, Postman</li>
+          <li>Промпт-инжиниринг для документации и SQL</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="case-1" class="case">
+    <div class="case-head">
+      <div>
+        <div class="section-num" style="margin-bottom:8px;">02 · Кейс 1</div>
+        <div class="case-title">Автоматизация расписания дежурных смен</div>
+        <div class="case-tagline">ПАО «Сбербанк» — 150+ сотрудников с плавающим графиком</div>
+      </div>
+      <div class="case-meta">дек 2025 — май 2026<br>Business / Process Analyst</div>
+    </div>
+
+    <div class="flow">
+      <div class="flow-label">AS-IS → TO-BE, укрупнённо</div>
+      <div class="flow-row">
+        <div class="flow-node">Ручное расписание<br>3–4 часа</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-node">15 интервью<br>23 бизнес-правила</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-node">SQL: история за 12 мес.<br>Python: паттерны</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-node">ERP ↔ GigaChat API<br>маппинг, валидация</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-node strong">Автогенерация<br>40 минут</div>
+      </div>
+    </div>
+
+    <div class="bpmn-wrap">
+      <div class="bpmn-title">Пример BPMN 2.0 — процесс TO-BE, два swimlane</div>
+      <svg viewBox="0 0 800 290" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow-ru" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="var(--ink-faint)"></path>
+          </marker>
+          <marker id="arrow-teal-ru" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="var(--teal)"></path>
+          </marker>
+        </defs>
+
+        <rect x="0" y="15" width="800" height="135" fill="var(--paper)"></rect>
+        <rect x="0" y="150" width="800" height="130" fill="var(--paper-deep)"></rect>
+        <line x1="0" y1="150" x2="800" y2="150" stroke="var(--line)" stroke-width="1"></line>
+        <text x="14" y="32" class="bpmn-lane-label">Swimlane: руководитель смены</text>
+        <text x="14" y="167" class="bpmn-lane-label">Swimlane: система · GigaChat API</text>
+
+        <circle cx="50" cy="95" r="14" class="bpmn-event"></circle>
+        <text x="50" y="128" text-anchor="middle" class="bpmn-task-txt">Старт цикла</text>
+
+        <rect x="105" y="72" width="100" height="46" rx="6" class="bpmn-task"></rect>
+        <text x="155" y="98" text-anchor="middle" class="bpmn-task-txt">Сбор предпочтений</text>
+        <text x="155" y="111" text-anchor="middle" class="bpmn-task-txt">сотрудников</text>
+
+        <rect x="235" y="72" width="105" height="46" rx="6" class="bpmn-task"></rect>
+        <text x="287" y="93" text-anchor="middle" class="bpmn-task-txt">Проверка 23</text>
+        <text x="287" y="106" text-anchor="middle" class="bpmn-task-txt">бизнес-правил</text>
+
+        <polygon points="405,78 429,95 405,112 381,95" class="bpmn-gateway"></polygon>
+        <text x="405" y="99" text-anchor="middle" class="bpmn-task-txt" font-weight="600">×</text>
+        <text x="405" y="130" text-anchor="middle" class="bpmn-task-txt">Конфликты?</text>
+
+        <rect x="360" y="20" width="130" height="40" rx="6" class="bpmn-task"></rect>
+        <text x="425" y="37" text-anchor="middle" class="bpmn-task-txt">Ручное разрешение</text>
+        <text x="425" y="49" text-anchor="middle" class="bpmn-task-txt">конфликта</text>
+
+        <rect x="500" y="187" width="130" height="46" rx="6" class="bpmn-task"></rect>
+        <text x="565" y="208" text-anchor="middle" class="bpmn-task-txt">Генерация черновика</text>
+        <text x="565" y="221" text-anchor="middle" class="bpmn-task-txt">расписания (AI)</text>
+
+        <rect x="655" y="187" width="105" height="46" rx="6" class="bpmn-task"></rect>
+        <text x="707" y="208" text-anchor="middle" class="bpmn-task-txt">Валидация по</text>
+        <text x="707" y="221" text-anchor="middle" class="bpmn-task-txt">ограничениям</text>
+
+        <circle cx="775" cy="210" r="14" class="bpmn-event"></circle>
+        <circle cx="775" cy="210" r="10" fill="var(--ink)"></circle>
+        <text x="775" y="245" text-anchor="middle" class="bpmn-task-txt">Опубликовано</text>
+
+        <path d="M64,95 L105,95" class="bpmn-flow" marker-end="url(#arrow-ru)"></path>
+        <path d="M205,95 L235,95" class="bpmn-flow" marker-end="url(#arrow-ru)"></path>
+        <path d="M340,95 L381,95" class="bpmn-flow" marker-end="url(#arrow-ru)"></path>
+
+        <path d="M405,78 L405,60" class="bpmn-flow-loop" marker-end="url(#arrow-teal-ru)"></path>
+        <text x="414" y="70" class="bpmn-cond">да</text>
+        <path d="M360,40 L287,40 L287,72" class="bpmn-flow-loop" marker-end="url(#arrow-teal-ru)"></path>
+
+        <path d="M429,95 L470,95 L470,210 L500,210" class="bpmn-flow" marker-end="url(#arrow-ru)"></path>
+        <text x="437" y="88" class="bpmn-cond">нет</text>
+
+        <path d="M630,210 L655,210" class="bpmn-flow" marker-end="url(#arrow-ru)"></path>
+        <path d="M760,210 L761,210" class="bpmn-flow" marker-end="url(#arrow-ru)"></path>
+      </svg>
+    </div>
+
+    <div class="grid-2">
+      <div class="col-block">
+        <div class="col-label">Задача</div>
+        <p>Составление расписания занимало 3–4 часа ручного труда. Данные о предпочтениях сотрудников хранились в разных файлах, нагрузка распределялась неравномерно, переработки не учитывались.</p>
+      </div>
+      <div class="col-block">
+        <div class="col-label">Действия</div>
+        <ul>
+          <li>15 интервью с линейным персоналом и руководителями</li>
+          <li>Выявлено 23 незадокументированных бизнес-правила</li>
+          <li>User Stories и Acceptance Criteria, согласование с руководителем</li>
+          <li>SQL-выгрузка за 12 мес. (JOIN 4 таблиц, оконные функции)</li>
+          <li>Анализ в Python — 5 паттернов неравномерной нагрузки</li>
+          <li>AS-IS / TO-BE в BPMN 2.0, ТЗ на алгоритм</li>
+          <li>Интеграция ERP ↔ GigaChat API (маппинг, валидация)</li>
+          <li>Бэк-тест на исторических данных, пилот на 10 сотрудниках</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="metrics">
+      <div class="metric"><div class="num">3–4ч → 40м</div><div class="desc">время планирования, −70% трудозатрат</div></div>
+      <div class="metric"><div class="num">+18 NPS</div><div class="desc">удовлетворённость сотрудников (62 → 80)</div></div>
+      <div class="metric"><div class="num">−25%</div><div class="desc">сверхурочных часов</div></div>
+      <div class="metric"><div class="num">8ч+/мес</div><div class="desc">высвобождено автоматизацией отчётов</div></div>
+    </div>
+
+    <div class="artifact">
+      <div class="artifact-bar"><span class="lbl">SQL · фрагмент витрины нагрузки</span><span class="dots"><span></span><span></span><span></span></span></div>
+      <pre><span class="cm">-- средняя нагрузка по сотруднику за скользящие 4 недели</span>
+<span class="kw">WITH</span> shift_load <span class="kw">AS</span> (
+  <span class="kw">SELECT</span> e.employee_id,
+         s.shift_date,
+         <span class="fn">SUM</span>(s.hours) <span class="kw">AS</span> daily_hours
+  <span class="kw">FROM</span> shifts s
+  <span class="kw">JOIN</span> employees e   <span class="kw">ON</span> e.employee_id = s.employee_id
+  <span class="kw">JOIN</span> departments d <span class="kw">ON</span> d.department_id = e.department_id
+  <span class="kw">JOIN</span> preferences p <span class="kw">ON</span> p.employee_id = e.employee_id
+  <span class="kw">WHERE</span> s.shift_date >= <span class="fn">CURRENT_DATE</span> - <span class="kw">INTERVAL</span> <span class="cm">'12 months'</span>
+)
+<span class="kw">SELECT</span> employee_id,
+       shift_date,
+       <span class="fn">AVG</span>(daily_hours) <span class="kw">OVER</span> (
+         <span class="kw">PARTITION BY</span> employee_id
+         <span class="kw">ORDER BY</span> shift_date
+         <span class="kw">ROWS BETWEEN</span> 27 <span class="kw">PRECEDING AND CURRENT ROW</span>
+       ) <span class="kw">AS</span> avg_load_4w
+<span class="kw">FROM</span> shift_load
+<span class="kw">ORDER BY</span> employee_id, shift_date;</pre>
+    </div>
+  </section>
+
+  <section id="case-2" class="case">
+    <div class="case-head">
+      <div>
+        <div class="section-num" style="margin-bottom:8px;">02 · Кейс 2</div>
+        <div class="case-title">Единая система отчётности для розничной сети</div>
+        <div class="case-tagline">Проектная деятельность — 40+ торговых точек</div>
+      </div>
+      <div class="case-meta">2024 — 2026<br>Business / System Analyst</div>
+    </div>
+
+    <div class="flow">
+      <div class="flow-label">AS-IS → TO-BE, укрупнённо</div>
+      <div class="flow-row">
+        <div class="flow-node">6 Excel-отчётов<br>2 ч/день сведение</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-node">8 стейкхолдеров<br>24 требования MoSCoW</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-node">1С → BigQuery<br>Python ETL</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-node">SQL-витрины<br>JOIN 5 таблиц, CTE</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-node strong">Дашборд Data Studio<br>15 минут</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="col-block">
+        <div class="col-label">Задача</div>
+        <p>Менеджеры тратили до 2 часов в день на ручное сведение 6 Excel-отчётов (выручка, возвраты, загрузка, остатки). Данные расходились между источниками.</p>
+      </div>
+      <div class="col-block">
+        <div class="col-label">Действия</div>
+        <ul>
+          <li>8 интервью со стейкхолдерами (финдир, руководители отделов)</li>
+          <li>24 требования, приоритизация MoSCoW</li>
+          <li>AS-IS / TO-BE в BPMN 2.0 (5 диаграмм)</li>
+          <li>SQL-витрины: JOIN 5 таблиц, оконные функции, CTE</li>
+          <li>Автозагрузка 1С → BigQuery (Python)</li>
+          <li>Дашборды в Data Studio, регламент обновления данных</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="metrics">
+      <div class="metric"><div class="num">2ч → 15м</div><div class="desc">формирование сводной отчётности</div></div>
+      <div class="metric"><div class="num">+3 среза</div><div class="desc">трафик, возвраты, динамика остатков</div></div>
+      <div class="metric"><div class="num">−8%</div><div class="desc">затоваривание за квартал</div></div>
+      <div class="metric"><div class="num">12 выгрузок</div><div class="desc">ручной сбор исключён полностью</div></div>
+    </div>
+  </section>
+
+  <section id="case-3" class="case">
+    <div class="case-head">
+      <div>
+        <div class="section-num" style="margin-bottom:8px;">02 · Кейс 3</div>
+        <div class="case-title">Категоризация и генерация карточек товаров</div>
+        <div class="case-tagline">Крупный продавец на Wildberries — 2000+ заказов в месяц</div>
+      </div>
+      <div class="case-meta">Проектная деятельность<br>Business / Product Analyst</div>
+    </div>
+
+    <div class="flow">
+      <div class="flow-label">AS-IS → TO-BE, укрупнённо</div>
+      <div class="flow-row">
+        <div class="flow-node">Модерация карточки<br>до 7 дней</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-node">«5 почему»<br>требования marketing/product</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-node">Чек-лист + ToV<br>UML Activity Diagram</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-node">21 правило<br>категоризация и маппинг</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-node strong">Авто-генерация карточек<br>2 дня</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="col-block">
+        <div class="col-label">Задача</div>
+        <p>Карточки товаров не имели единых стандартов оформления и не были системно распределены по категориям — часть уходила на доработку, часть попадала не в свою категорию, что снижало видимость и конверсию. Модерация занимала до 7 дней, доля возвратов на доработку доходила до 40%.</p>
+        <p>Главная цель — не разовая чистка, а <b style="color:var(--ink)">повторяемый процесс</b>: собрать требования, формализовать правила распределения по категориям и настроить генерацию новых карточек так, чтобы дальше система обрабатывала товар сама.</p>
+      </div>
+      <div class="col-block">
+        <div class="col-label">Действия</div>
+        <ul>
+          <li>Анализ корневых причин методом «5 почему» — почему карточки расходятся по стандартам и категориям</li>
+          <li>Сбор требований от маркетингового и продуктового отделов</li>
+          <li>Чек-лист обязательных полей и Tone of Voice, согласован со стейкхолдерами</li>
+          <li>Алгоритм валидации карточки — UML Activity Diagram</li>
+          <li>21 бизнес-правило категоризации формализовано в системные требования (маппинг атрибутов → категория)</li>
+          <li>ТЗ для разработчиков: интеграция CRM с API внешнего сервиса для авто-генерации карточек</li>
+          <li>Нефункциональные требования: отклик до 3 сек, batch-обработка до 500 карточек за проход</li>
+          <li>UAT с 5 пилотными менеджерами, правила скорректированы по обратной связи</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="metrics">
+      <div class="metric"><div class="num">40% → 12%</div><div class="desc">карточек, возвращаемых на доработку</div></div>
+      <div class="metric"><div class="num">7д → 2д</div><div class="desc">время вывода карточки на витрину</div></div>
+      <div class="metric"><div class="num">+18%</div><div class="desc">конверсия в категории после переразметки</div></div>
+      <div class="metric"><div class="num">21 правило</div><div class="desc">формализовано для авто-категоризации</div></div>
+    </div>
+
+    <div class="artifact">
+      <div class="artifact-bar"><span class="lbl">Фрагмент · правила категоризации</span><span class="dots"><span></span><span></span><span></span></span></div>
+      <pre><span class="cm">// пример формализованного правила из 21</span>
+<span class="kw">RULE</span> R-07: <span class="fn">IF</span> attribute.material <span class="kw">IN</span> [<span class="cm">'хлопок','лён','вискоза'</span>]
+       <span class="kw">AND</span> attribute.type = <span class="cm">'одежда'</span>
+  <span class="fn">THEN</span> category = <span class="cm">'Одежда → Натуральные ткани'</span>
+       priority = <span class="cm">HIGH</span>
+
+<span class="kw">RULE</span> R-14: <span class="fn">IF</span> title.length &lt; 20 <span class="kw">OR</span> photos.count &lt; 3
+  <span class="fn">THEN</span> status = <span class="cm">'на доработку'</span>
+       reason = <span class="cm">'не соответствует чек-листу'</span></pre>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <span class="section-title">Образование и языки</span>
+    </div>
+    <div class="grid-2">
+      <div class="col-block">
+        <div class="col-label">Образование</div>
+        <p><b style="color:var(--ink)">НИУ РАНХиГС</b>, Нижний Новгород — «Прикладная информатика», факультет управления. Очная форма, выпуск 2028.</p>
+        <p>Дополнительно: «Системный анализ и управление требованиями» (Stepik), «SQL для анализа данных» — оконные функции, JOIN, оптимизация запросов.</p>
+      </div>
+      <div class="col-block">
+        <div class="col-label">Языки</div>
+        <ul>
+          <li>Английский — C1 (техдокументация, требования, деловая переписка)</li>
+          <li>Немецкий — A2</li>
+          <li>Сербский — A1</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="disp">Открыта к проектам и позициям</div>
+    <p>Ищу полноценную роль или проектную занятость на стыке бизнес-анализа и AI-инструментов — на российском и зарубежном рынках.</p>
+    <div class="cta-row">
+      <a class="cta primary" href="mailto:LakiYT2408@yandex.ru">Написать на почту</a>
+      <a class="cta" href="tel:+79271787871">+7 927 178-78-71</a>
+    </div>
+    <div class="note">Все запросы к базам данных приведены в обезличенном/учебном виде и служат иллюстрацией подхода к работе с данными.</div>
+  </footer>
+
+
+</div>
+
+<div class="wrap lang-block" id="block-en" style="display:none;">
+
+  <header>
+    <div class="eyebrow">Portfolio · Business &amp; Process Analysis</div>
+    <h1 class="name">Daria Naumenko</h1>
+    <p class="role-line">Business / Process Analyst focused on <b>AI-augmented process optimization</b> — from requirements gathering and BPMN modelling to implementation via GigaChat / OpenAI APIs.</p>
+    <div class="contact-row">
+      <a href="mailto:LakiYT2408@yandex.ru">LakiYT2408@yandex.ru</a>
+      <span>+7 927 178-78-71</span>
+      <span>Nizhny Novgorod, Russia · hybrid / remote</span>
+    </div>
+  </header>
+
+  <section id="skills">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <span class="section-title">Skills</span>
+    </div>
+    <div class="skill-grid">
+      <div class="skill-card">
+        <div class="k-label">Business Analysis</div>
+        <ul>
+          <li>User Stories, Use Cases, Acceptance Criteria</li>
+          <li>MoSCoW prioritization, root-cause ("5 Whys") analysis</li>
+          <li>Stakeholder management</li>
+        </ul>
+      </div>
+      <div class="skill-card">
+        <div class="k-label">Modelling</div>
+        <ul>
+          <li>BPMN 2.0 (AS-IS / TO-BE)</li>
+          <li>UML (Activity, Sequence)</li>
+          <li>Draw.io, Miro</li>
+        </ul>
+      </div>
+      <div class="skill-card">
+        <div class="k-label">Data</div>
+        <ul>
+          <li>SQL — JOIN, aggregation, subqueries: confident</li>
+          <li>Window functions, CTEs — working level <span class="tag-ai">+ AI assistants for complex queries</span></li>
+          <li>Python (Pandas), Excel Power Query</li>
+        </ul>
+      </div>
+      <div class="skill-card">
+        <div class="k-label">AI Integrations</div>
+        <ul>
+          <li>OpenAI API, GigaChat, YandexGPT</li>
+          <li>REST/SOAP, OpenAPI, Postman</li>
+          <li>Prompt engineering for documentation and SQL</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="case-1" class="case">
+    <div class="case-head">
+      <div>
+        <div class="section-num" style="margin-bottom:8px;">02 · Case 1</div>
+        <div class="case-title">Shift Scheduling Automation</div>
+        <div class="case-tagline">Sberbank (PJSC) — 150+ employees on rotating shifts</div>
+      </div>
+      <div class="case-meta">Dec 2025 — May 2026<br>Business / Process Analyst</div>
+    </div>
+
+    <div class="flow">
+      <div class="flow-label">AS-IS → TO-BE, high level</div>
+      <div class="flow-row">
+        <div class="flow-node">Manual scheduling<br>3–4 hours</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-node">15 interviews<br>23 business rules</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-node">SQL: 12-mo history<br>Python: patterns</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-node">ERP ↔ GigaChat API<br>mapping, validation</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-node strong">Auto-generation<br>40 minutes</div>
+      </div>
+    </div>
+
+    <div class="bpmn-wrap">
+      <div class="bpmn-title">BPMN 2.0 example — TO-BE process, two swimlanes</div>
+      <svg viewBox="0 0 800 290" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="var(--ink-faint)"></path>
+          </marker>
+          <marker id="arrow-teal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="var(--teal)"></path>
+          </marker>
+        </defs>
+
+        <rect x="0" y="15" width="800" height="135" fill="var(--paper)"></rect>
+        <rect x="0" y="150" width="800" height="130" fill="var(--paper-deep)"></rect>
+        <line x1="0" y1="150" x2="800" y2="150" stroke="var(--line)" stroke-width="1"></line>
+        <text x="14" y="32" class="bpmn-lane-label">Lane: Scheduling Manager</text>
+        <text x="14" y="167" class="bpmn-lane-label">Lane: System · GigaChat API</text>
+
+        <circle cx="50" cy="95" r="14" class="bpmn-event"></circle>
+        <text x="50" y="128" text-anchor="middle" class="bpmn-task-txt">Cycle starts</text>
+
+        <rect x="105" y="72" width="100" height="46" rx="6" class="bpmn-task"></rect>
+        <text x="155" y="98" text-anchor="middle" class="bpmn-task-txt">Collect employee</text>
+        <text x="155" y="111" text-anchor="middle" class="bpmn-task-txt">preferences</text>
+
+        <rect x="235" y="72" width="105" height="46" rx="6" class="bpmn-task"></rect>
+        <text x="287" y="93" text-anchor="middle" class="bpmn-task-txt">Check 23 business</text>
+        <text x="287" y="106" text-anchor="middle" class="bpmn-task-txt">rules</text>
+
+        <polygon points="405,78 429,95 405,112 381,95" class="bpmn-gateway"></polygon>
+        <text x="405" y="99" text-anchor="middle" class="bpmn-task-txt" font-weight="600">×</text>
+        <text x="405" y="130" text-anchor="middle" class="bpmn-task-txt">Conflicts?</text>
+
+        <rect x="365" y="20" width="120" height="40" rx="6" class="bpmn-task"></rect>
+        <text x="425" y="37" text-anchor="middle" class="bpmn-task-txt">Resolve conflict</text>
+        <text x="425" y="49" text-anchor="middle" class="bpmn-task-txt">manually</text>
+
+        <rect x="500" y="187" width="130" height="46" rx="6" class="bpmn-task"></rect>
+        <text x="565" y="208" text-anchor="middle" class="bpmn-task-txt">Generate draft</text>
+        <text x="565" y="221" text-anchor="middle" class="bpmn-task-txt">schedule (AI)</text>
+
+        <rect x="655" y="187" width="105" height="46" rx="6" class="bpmn-task"></rect>
+        <text x="707" y="208" text-anchor="middle" class="bpmn-task-txt">Validate against</text>
+        <text x="707" y="221" text-anchor="middle" class="bpmn-task-txt">constraints</text>
+
+        <circle cx="775" cy="210" r="14" class="bpmn-event"></circle>
+        <circle cx="775" cy="210" r="10" fill="var(--ink)"></circle>
+        <text x="775" y="245" text-anchor="middle" class="bpmn-task-txt">Published</text>
+
+        <path d="M64,95 L105,95" class="bpmn-flow" marker-end="url(#arrow)"></path>
+        <path d="M205,95 L235,95" class="bpmn-flow" marker-end="url(#arrow)"></path>
+        <path d="M340,95 L381,95" class="bpmn-flow" marker-end="url(#arrow)"></path>
+
+        <path d="M405,78 L405,60" class="bpmn-flow-loop" marker-end="url(#arrow-teal)"></path>
+        <text x="414" y="70" class="bpmn-cond">yes</text>
+        <path d="M365,40 L287,40 L287,72" class="bpmn-flow-loop" marker-end="url(#arrow-teal)"></path>
+
+        <path d="M429,95 L470,95 L470,210 L500,210" class="bpmn-flow" marker-end="url(#arrow)"></path>
+        <text x="437" y="88" class="bpmn-cond">no</text>
+
+        <path d="M630,210 L655,210" class="bpmn-flow" marker-end="url(#arrow)"></path>
+        <path d="M760,210 L761,210" class="bpmn-flow" marker-end="url(#arrow)"></path>
+      </svg>
+    </div>
+
+    <div class="grid-2">
+      <div class="col-block">
+        <div class="col-label">Task</div>
+        <p>Building the shift schedule took 3–4 hours of manual work every cycle. Employee preference data lived across disconnected files, workload was distributed unevenly, and overtime wasn't tracked.</p>
+      </div>
+      <div class="col-block">
+        <div class="col-label">Actions</div>
+        <ul>
+          <li>15 interviews with frontline staff and team leads</li>
+          <li>Identified 23 undocumented business rules</li>
+          <li>User Stories and Acceptance Criteria, signed off by the manager</li>
+          <li>SQL extract, 12-month history (4-table JOIN, window functions)</li>
+          <li>Python analysis — 5 recurring workload-imbalance patterns</li>
+          <li>AS-IS / TO-BE in BPMN 2.0, algorithm specification</li>
+          <li>ERP ↔ GigaChat API integration (mapping, validation)</li>
+          <li>Back-test on historical data, pilot with 10 employees</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="metrics">
+      <div class="metric"><div class="num">3–4h → 40m</div><div class="desc">scheduling time, −70% effort</div></div>
+      <div class="metric"><div class="num">+18 NPS</div><div class="desc">employee satisfaction (62 → 80)</div></div>
+      <div class="metric"><div class="num">−25%</div><div class="desc">overtime hours</div></div>
+      <div class="metric"><div class="num">8h+/mo</div><div class="desc">freed up by report automation</div></div>
+    </div>
+
+    <div class="artifact">
+      <div class="artifact-bar"><span class="lbl">SQL · workload data mart excerpt</span><span class="dots"><span></span><span></span><span></span></span></div>
+      <pre><span class="cm">-- average workload per employee, rolling 4-week window</span>
+<span class="kw">WITH</span> shift_load <span class="kw">AS</span> (
+  <span class="kw">SELECT</span> e.employee_id,
+         s.shift_date,
+         <span class="fn">SUM</span>(s.hours) <span class="kw">AS</span> daily_hours
+  <span class="kw">FROM</span> shifts s
+  <span class="kw">JOIN</span> employees e   <span class="kw">ON</span> e.employee_id = s.employee_id
+  <span class="kw">JOIN</span> departments d <span class="kw">ON</span> d.department_id = e.department_id
+  <span class="kw">JOIN</span> preferences p <span class="kw">ON</span> p.employee_id = e.employee_id
+  <span class="kw">WHERE</span> s.shift_date >= <span class="fn">CURRENT_DATE</span> - <span class="kw">INTERVAL</span> <span class="cm">'12 months'</span>
+)
+<span class="kw">SELECT</span> employee_id,
+       shift_date,
+       <span class="fn">AVG</span>(daily_hours) <span class="kw">OVER</span> (
+         <span class="kw">PARTITION BY</span> employee_id
+         <span class="kw">ORDER BY</span> shift_date
+         <span class="kw">ROWS BETWEEN</span> 27 <span class="kw">PRECEDING AND CURRENT ROW</span>
+       ) <span class="kw">AS</span> avg_load_4w
+<span class="kw">FROM</span> shift_load
+<span class="kw">ORDER BY</span> employee_id, shift_date;</pre>
+    </div>
+  </section>
+
+  <section id="case-2" class="case">
+    <div class="case-head">
+      <div>
+        <div class="section-num" style="margin-bottom:8px;">02 · Case 2</div>
+        <div class="case-title">Unified Reporting for a Retail Chain</div>
+        <div class="case-tagline">Project engagement — 40+ retail locations</div>
+      </div>
+      <div class="case-meta">2024 — 2026<br>Business / System Analyst</div>
+    </div>
+
+    <div class="flow">
+      <div class="flow-label">AS-IS → TO-BE, high level</div>
+      <div class="flow-row">
+        <div class="flow-node">6 Excel reports<br>2h/day reconciliation</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-node">8 stakeholders<br>24 MoSCoW requirements</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-node">1C → BigQuery<br>Python ETL</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-node">SQL data marts<br>5-table JOIN, CTEs</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-node strong">Data Studio dashboard<br>15 minutes</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="col-block">
+        <div class="col-label">Task</div>
+        <p>Managers spent up to 2 hours a day manually reconciling 6 Excel reports (revenue, returns, footfall, stock). Figures diverged across sources.</p>
+      </div>
+      <div class="col-block">
+        <div class="col-label">Actions</div>
+        <ul>
+          <li>8 stakeholder interviews (CFO, department heads)</li>
+          <li>24 requirements, MoSCoW prioritization</li>
+          <li>AS-IS / TO-BE in BPMN 2.0 (5 diagrams)</li>
+          <li>SQL data marts: 5-table JOIN, window functions, CTEs</li>
+          <li>Automated 1C → BigQuery data load (Python)</li>
+          <li>Data Studio dashboards, refresh schedule and ownership</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="metrics">
+      <div class="metric"><div class="num">2h → 15m</div><div class="desc">to produce consolidated reporting</div></div>
+      <div class="metric"><div class="num">+3 views</div><div class="desc">footfall, returns, stock trend</div></div>
+      <div class="metric"><div class="num">−8%</div><div class="desc">overstock within one quarter</div></div>
+      <div class="metric"><div class="num">12 exports</div><div class="desc">manual data pulls eliminated</div></div>
+    </div>
+  </section>
+
+  <section id="case-3" class="case">
+    <div class="case-head">
+      <div>
+        <div class="section-num" style="margin-bottom:8px;">02 · Case 3</div>
+        <div class="case-title">Product Card Categorization &amp; Generation</div>
+        <div class="case-tagline">Large Wildberries marketplace seller — 2,000+ orders/month</div>
+      </div>
+      <div class="case-meta">Project engagement<br>Business / Product Analyst</div>
+    </div>
+
+    <div class="flow">
+      <div class="flow-label">AS-IS → TO-BE, high level</div>
+      <div class="flow-row">
+        <div class="flow-node">Card moderation<br>up to 7 days</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-node">"5 Whys"<br>marketing/product requirements</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-node">Checklist + ToV<br>UML Activity Diagram</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-node">21 rules<br>categorization &amp; mapping</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-node strong">Auto-generated cards<br>2 days</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="col-block">
+        <div class="col-label">Task</div>
+        <p>Product cards had no shared formatting standard and weren't systematically mapped to categories — some were sent back for rework, others landed in the wrong category, hurting visibility and conversion. Moderation took up to 7 days, and up to 40% of cards were bounced back for revision.</p>
+        <p>The goal wasn't a one-off cleanup but a <b style="color:var(--ink)">repeatable process</b>: gather requirements, formalize category-assignment rules, and set up generation for new cards so the system could handle new listings on its own.</p>
+      </div>
+      <div class="col-block">
+        <div class="col-label">Actions</div>
+        <ul>
+          <li>Root-cause analysis via "5 Whys" — why cards drifted from standards and categories</li>
+          <li>Requirements gathering from the marketing and product teams</li>
+          <li>Mandatory-field checklist and Tone of Voice, signed off by stakeholders</li>
+          <li>Card validation logic as a UML Activity Diagram</li>
+          <li>21 categorization business rules formalized into system requirements (attribute → category mapping)</li>
+          <li>Specification for developers: CRM integration with an external API for card auto-generation</li>
+          <li>Non-functional requirements: response time under 3s, batch processing up to 500 cards per run</li>
+          <li>UAT with 5 pilot managers; rules adjusted based on feedback</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="metrics">
+      <div class="metric"><div class="num">40% → 12%</div><div class="desc">cards sent back for rework</div></div>
+      <div class="metric"><div class="num">7d → 2d</div><div class="desc">time to publish a card</div></div>
+      <div class="metric"><div class="num">+18%</div><div class="desc">category conversion after re-mapping</div></div>
+      <div class="metric"><div class="num">21 rules</div><div class="desc">formalized for auto-categorization</div></div>
+    </div>
+
+    <div class="artifact">
+      <div class="artifact-bar"><span class="lbl">Excerpt · categorization rules</span><span class="dots"><span></span><span></span><span></span></span></div>
+      <pre><span class="cm">// example of a formalized rule, one of 21</span>
+<span class="kw">RULE</span> R-07: <span class="fn">IF</span> attribute.material <span class="kw">IN</span> [<span class="cm">'cotton','linen','viscose'</span>]
+       <span class="kw">AND</span> attribute.type = <span class="cm">'apparel'</span>
+  <span class="fn">THEN</span> category = <span class="cm">'Apparel → Natural fabrics'</span>
+       priority = <span class="cm">HIGH</span>
+
+<span class="kw">RULE</span> R-14: <span class="fn">IF</span> title.length &lt; 20 <span class="kw">OR</span> photos.count &lt; 3
+  <span class="fn">THEN</span> status = <span class="cm">'needs rework'</span>
+       reason = <span class="cm">'fails checklist'</span></pre>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <span class="section-title">Education &amp; Languages</span>
+    </div>
+    <div class="grid-2">
+      <div class="col-block">
+        <div class="col-label">Education</div>
+        <p><b style="color:var(--ink)">RANEPA</b> (Russian Presidential Academy of National Economy and Public Administration), Nizhny Novgorod — B.Sc. in Applied Informatics, School of Management. Full-time, expected graduation 2028.</p>
+        <p>Additional: "Systems Analysis &amp; Requirements Management" (Stepik), "SQL for Data Analysis" — window functions, JOINs, query optimization.</p>
+      </div>
+      <div class="col-block">
+        <div class="col-label">Languages</div>
+        <ul>
+          <li>English — C1 (technical documentation, requirements, business correspondence)</li>
+          <li>German — A2</li>
+          <li>Serbian — A1</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="disp">Open to roles and projects</div>
+    <p>Looking for a full-time role or project-based work at the intersection of business analysis and AI tooling — in both the Russian and international markets.</p>
+    <div class="cta-row">
+      <a class="cta primary" href="mailto:LakiYT2408@yandex.ru">Email me</a>
+      <a class="cta" href="tel:+79271787871">+7 927 178-78-71</a>
+    </div>
+    <div class="note">All database queries shown are anonymized/illustrative and demonstrate approach rather than production code.</div>
+  </footer>
+
+
+</div>
+
+<script>
+  function setLang(lang){
+    document.getElementById('block-ru').style.display = (lang === 'ru') ? 'block' : 'none';
+    document.getElementById('block-en').style.display = (lang === 'en') ? 'block' : 'none';
+    document.getElementById('btn-ru').classList.toggle('active', lang === 'ru');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.documentElement.lang = lang;
+  }
+</script>
+</body>
+</html>
